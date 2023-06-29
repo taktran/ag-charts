@@ -43,15 +43,24 @@ const path = Astro.url.pathname;
     </head>
     <body>
         <SiteHeader />
-        <slot />
+        <main>
+            <slot />
+        </main>
         <Footer path={path} />
     </body>
 </html>
 
-<style>
+<style lang="scss">
+    @use "../design-system" as *;
+
     body {
         min-height: 100dvh;
         display: flex;
         flex-direction: column;
+    }
+
+    main {
+        margin: $size-3 auto;
+        max-width: 1000px;
     }
 </style>

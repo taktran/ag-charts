@@ -1,17 +1,11 @@
 ---
+import { getEntry } from "astro:content";
 import Layout from "../layouts/Layout.astro";
+
+const pageEntry = await getEntry("docs", "index");
+const { Content } = await pageEntry.render();
 ---
 
-<Layout title="Documentation | AG Charts">
-    <main><h1>Documentation: Coming soon.</h1></main>
+<Layout title={pageEntry.data.title}>
+    <Content />
 </Layout>
-
-<style>
-    main {
-        margin-top: 20px;
-    }
-
-    h1 {
-        text-align: center;
-    }
-</style>
