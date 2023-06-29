@@ -1,1 +1,8 @@
-export const FRAMEWORKS = ["javascript", "react", "angular", "vue"];
+import type { Framework } from "./types/ag-grid";
+
+export const FRAMEWORKS: Framework[] = [
+    "javascript",
+    "react",
+    "angular",
+    "vue",
+];
