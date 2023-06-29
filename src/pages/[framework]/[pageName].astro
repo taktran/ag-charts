@@ -1,0 +1,60 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import { getDocPages, getDocPagesList } from "../../utils/pages";
+
+export async function getStaticPaths() {
+    const pages = await getCollection("docs");
+    return getDocPages(pages);
+}
+
+const { page } = Astro.props;
+const { framework } = Astro.params;
+const { title, enterprise } = page.data;
+
+const { Content } = await page.render();
+
+const allDocPages = await getCollection("docs");
+const pages = getDocPagesList(allDocPages);
+---
+
+<Layout>
+    <section class="main">
+        <div class="sidebar">Sidebar</div>
+        <div class="content">
+            <h1>[{framework}]: {title} {enterprise ? "[e]" : ""}</h1>
+            <Content framework={framework} page={page} />
+        </div>
+    </section>
+
+    <style>
+        .main {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            grid-template-areas:
+                "header header"
+                "sidebar content";
+            gap: 8px;
+        }
+
+        .header {
+            grid-area: header;
+            display: flex;
+            justify-content: space-between;
+            background: #eaeaea;
+            padding: 8px;
+        }
+
+        .sidebar {
+            grid-area: sidebar;
+        }
+
+        .content {
+            grid-area: content;
+        }
+
+        .content h1 {
+            margin-top: 0;
+        }
+    </style>
+</Layout>

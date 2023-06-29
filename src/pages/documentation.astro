@@ -1,11 +1,2 @@
----
-import { getEntry } from "astro:content";
-import Layout from "../layouts/Layout.astro";
-
-const pageEntry = await getEntry("docs", "index");
-const { Content } = await pageEntry.render();
----
-
-<Layout title={pageEntry.data.title}>
-    <Content />
-</Layout>
+<!-- Redirect to overview -->
+<meta http-equiv="refresh" content="0;url=/javascript/overview" />
