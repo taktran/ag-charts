@@ -5,11 +5,16 @@ import "../design-system/design-system.scss";
 import { Footer } from "../components/footer/Footer";
 
 export interface Props {
-    title: string;
+    title?: string;
     description?: string;
+    showTopBar?: boolean;
 }
 
-const { title, description = "AG Charts website" } = Astro.props;
+const {
+    title = "AG Charts",
+    description = "AG Charts website",
+    showTopBar,
+} = Astro.props;
 const path = Astro.url.pathname;
 ---
 
@@ -42,25 +47,57 @@ const path = Astro.url.pathname;
         <title>{title}</title>
     </head>
     <body>
-        <SiteHeader />
-        <main>
-            <slot />
-        </main>
+        <div class="mainContainer">
+            <SiteHeader />
+            {
+                showTopBar && (
+                    <div class="topBar">
+                        <div class="page-margin">TODO: Top bar</div>
+                    </div>
+                )
+            }
+
+            <div class="contentViewport">
+                <slot name="aside" />
+                <slot />
+            </div>
+        </div>
         <Footer path={path} />
+
+        <style lang="scss">
+            @use "../design-system" as *;
+
+            html {
+                overflow-x: hidden;
+            }
+
+            main {
+                flex: 1 1 auto;
+                min-width: 0px;
+            }
+
+            .mainContainer {
+                display: flex;
+                flex-direction: column;
+                min-height: 100vh;
+                padding: 0;
+                width: 100%;
+            }
+
+            .contentViewport {
+                display: flex;
+                flex-direction: column;
+                flex-grow: 1;
+
+                @media (min-width: $breakpoint-docs-nav-medium) {
+                    flex-direction: row;
+                }
+            }
+
+            .topBar {
+                background-color: var(--toolbar-background);
+                padding: $size-2 0;
+            }
+        </style>
     </body>
 </html>
-
-<style lang="scss">
-    @use "../design-system" as *;
-
-    body {
-        min-height: 100dvh;
-        display: flex;
-        flex-direction: column;
-    }
-
-    main {
-        margin: $size-3 auto;
-        max-width: 1000px;
-    }
-</style>

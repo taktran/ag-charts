@@ -6,3 +6,10 @@ export const FRAMEWORKS: Framework[] = [
     "angular",
     "vue",
 ];
+
+export const FRAMEWORK_DISPLAY_TEXT: Record<Framework, string> = {
+    javascript: "JavaScript",
+    react: "React",
+    angular: "Angular",
+    vue: "Vue",
+};

@@ -2,6 +2,9 @@
 import { getCollection } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 import { getDocPages, getDocPagesList } from "../../utils/pages";
+import { PagesNavigation } from "../../components/pages-navigation/PagesNavigation";
+import { getFrameworkDisplayText } from "../../utils/framework";
+import type { Framework } from "../../types/ag-grid";
 
 export async function getStaticPaths() {
     const pages = await getCollection("docs");
@@ -18,43 +21,21 @@ const allDocPages = await getCollection("docs");
 const pages = getDocPagesList(allDocPages);
 ---
 
-<Layout>
-    <section class="main">
-        <div class="sidebar">Sidebar</div>
-        <div class="content">
-            <h1>[{framework}]: {title} {enterprise ? "[e]" : ""}</h1>
-            <Content framework={framework} page={page} />
-        </div>
-    </section>
+<Layout
+    title={`${getFrameworkDisplayText(
+        framework as Framework
+    )} Charts: AG Charts`}
+    showTopBar={true}
+>
+    <PagesNavigation
+        client:load
+        slot="aside"
+        pages={pages}
+        framework={framework!}
+    />
 
-    <style>
-        .main {
-            display: grid;
-            grid-template-columns: 200px 1fr;
-            grid-template-areas:
-                "header header"
-                "sidebar content";
-            gap: 8px;
-        }
-
-        .header {
-            grid-area: header;
-            display: flex;
-            justify-content: space-between;
-            background: #eaeaea;
-            padding: 8px;
-        }
-
-        .sidebar {
-            grid-area: sidebar;
-        }
-
-        .content {
-            grid-area: content;
-        }
-
-        .content h1 {
-            margin-top: 0;
-        }
-    </style>
+    <main>
+        <h1>[{framework}]: {title} {enterprise ? "[e]" : ""}</h1>
+        <Content framework={framework} page={page} />
+    </main>
 </Layout>
